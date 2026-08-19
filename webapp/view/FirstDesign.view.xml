@@ -1,0 +1,62 @@
+<mvc:View controllerName="project1.controller.FirstDesign"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Page title="{i18n>firstDesignPageName}">
+        <content>
+            <VBox 
+                class="sapUiMediumMargin"
+                gap="0.5rem"
+            >
+                <Title 
+                    text="{i18n>nameInputTitle}"
+                    level="H1"
+                />
+
+                 <Input
+                    id="input"
+                    placeholder="{i18n>nameInputPlaceholder}" 
+                />
+
+                <Button
+                    id="button"
+                    text="{i18n>sendButtonText}"
+                    type="Emphasized"
+                    press=".onPress" 
+                />
+
+                <HBox gap="0.5rem">
+                    <Button 
+                        text="{i18n>goToFullNameButtonText}"
+                        type="Default"
+                        press=".onPressGoToFullName"
+                    />
+                    <Button 
+                        text="{i18n>goToPropertyBindingButtonText}"
+                        type="Default"
+                        press=".onPressGoToPropertyBinding"
+                    />
+                    <Button 
+                        text="{i18n>goToAggregationBindingButtonText}"
+                        type="Default"
+                        press=".onPressGoToAggregationBinding"
+                    />
+                    <Button 
+                        text="{i18n>goToFactoryFunctionsButtonText}"
+                        type="Default"
+                        press=".onPressGoToFactoryFunctions"
+                    />
+                    <Button 
+                        text="{i18n>goToCRUDButtonText}"
+                        type="Default"
+                        press=".onPressGoToCRUD"
+                    />
+                    <Button 
+                        text="{i18n>goToParametersButtonText}"
+                        type="Default"
+                        press=".onPressGoToParameters"
+                    />
+                </HBox>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

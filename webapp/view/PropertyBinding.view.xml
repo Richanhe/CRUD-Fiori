@@ -1,0 +1,36 @@
+<mvc:View controllerName="project1.controller.PropertyBinding"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Page title="{i18n>propertyBindingPageName}">
+        <content>
+            <HBox 
+                class="sapUiMediumMargin"
+                gap="0.5rem"
+            >
+                <VBox >
+                    <Label text="Primeiro nome"></Label>
+                    <Input
+                        id="firstNamePropertyInput"
+                        value="{/FirstName}"
+                    ></Input>
+                </VBox>
+                <VBox >
+                    <Label text="Segundo nome"></Label>
+                    <Input
+                        id="lastNamePropertyInput"
+                        value="{/LastName}"
+                    ></Input>
+                </VBox>
+            </HBox>
+            <VBox class="sapUiMediumMargin">
+                <Label text="Nome inteiro"></Label>
+                <Input 
+                    editable="false" 
+                    enabled="false" 
+                    id="fullNamePropertyInput"
+                    value="{/FirstName} {/LastName}"
+                ></Input>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

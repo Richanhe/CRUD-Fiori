@@ -1,0 +1,31 @@
+<mvc:View controllerName="project1.controller.FullName"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Page title="{i18n>fullNamePageName}">
+        <content>
+            <HBox 
+                class="sapUiMediumMargin"
+                gap="0.5rem"
+            >
+                <VBox >
+                    <Label text="Primeiro nome"></Label>
+                    <Input
+                        id="firstNameInput"
+                        change=".processFullName"
+                    ></Input>
+                </VBox>
+                <VBox >
+                    <Label text="Segundo nome"></Label>
+                    <Input
+                        id="lastNameInput"
+                        change=".processFullName"
+                    ></Input>
+                </VBox>
+            </HBox>
+            <VBox class="sapUiMediumMargin">
+                <Label text="Nome inteiro"></Label>
+                <Input editable="false" enabled="false" id="fullNameInput"></Input>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

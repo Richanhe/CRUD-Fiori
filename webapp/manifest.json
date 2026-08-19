@@ -1,0 +1,164 @@
+{
+  "_version": "1.86.0",
+  "sap.app": {
+    "id": "project1",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.30.0",
+      "toolsId": "994380c9-705e-42c9-95ec-19c7397ced17"
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": false,
+    "dependencies": {
+      "minUI5Version": "1.151.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "project1.i18n.i18n"
+        }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "transition": "slide",
+        "type": "View",
+        "viewType": "XML",
+        "path": "project1.view",
+        "async": true,
+        "viewPath": "project1.view"
+      },
+      "routes": [
+        {
+          "name": "RouteFirstDesign",
+          "pattern": "",
+          "target": [
+            "TargetFirstDesign"
+          ]
+        },
+        {
+          "name": "RouteFullName",
+          "pattern": "fullname",
+          "target": [
+            "TargetFullName"
+          ]
+        },
+        {
+          "name": "RoutePropertyBinding",
+          "pattern": "propertybinding",
+          "target": [
+            "TargetPropertyBinding"
+          ]
+        },
+        {
+          "name": "RouteAggregationBinding",
+          "pattern": "aggregationbinding",
+          "target": [
+            "TargetAggregationBinding"
+          ]
+        },
+        {
+          "name": "RouteFactoryFunctions",
+          "pattern": "factoryfunctions",
+          "target": [
+            "TargetFactoryFunctions"
+          ]
+        },
+        {
+          "name": "RouteCRUD",
+          "pattern": "crud",
+          "target": [
+            "TargetCRUD"
+          ]
+        },
+        {
+          "name": "RouteParameters",
+          "pattern": "parameters/{id}",
+          "target": [
+            "TargetParameters"
+          ]
+        }
+      ],
+      "targets": {
+        "TargetFirstDesign": {
+          "id": "FirstDesign",
+          "name": "FirstDesign"
+        },
+        "TargetFullName": {
+          "id": "FullName",
+          "name": "FullName"
+        },
+        "TargetPropertyBinding": {
+          "id": "PropertyBinding",
+          "name": "PropertyBinding"
+        },
+        "TargetAggregationBinding": {
+          "id": "AggregationBinding",
+          "name": "AggregationBinding"
+        },
+        "TargetFactoryFunctions": {
+          "id": "FactoryFunctions",
+          "name": "FactoryFunctions"
+        },
+        "TargetCRUD": {
+          "id": "CRUD",
+          "name": "CRUD"
+        },
+        "TargetParameters": {
+          "id": "Parameters",
+          "name": "Parameters"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "project1.view.App",
+      "type": "XML",
+      "id": "App",
+      "async": true
+    }
+  }
+}

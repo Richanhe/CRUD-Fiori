@@ -1,0 +1,28 @@
+<mvc:View controllerName="project1.controller.AggregationBinding"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Page title="{i18n>aggregationBindingPageName}">
+        <content>
+            <Table items="{/Products}">
+                <columns>
+                    <Column >
+                        <Text text="Product"></Text>
+                    </Column>
+                    <Column >
+                        <Text text="Per Unit"></Text>
+                    </Column>
+                    <Column >
+                        <Text text="In Stock"></Text>
+                    </Column>
+                </columns>
+                <ColumnListItem >
+                    <cells>
+                        <ObjectIdentifier title="{ProductName}" text="{ProductID}"></ObjectIdentifier>
+                        <Text text="{QuantityPerUnit}"></Text>
+                        <Text text="{UnitsInStock}"></Text>
+                    </cells>
+                </ColumnListItem>
+            </Table>
+        </content>
+    </Page>
+</mvc:View>

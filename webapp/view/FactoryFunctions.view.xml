@@ -1,0 +1,21 @@
+<mvc:View controllerName="project1.controller.FactoryFunctions"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Page title="{i18n>factoryFunctionsPageName}">
+        <content>
+            <Table items="{path:'/Products', factory:'.productFactory'}">
+                <columns>
+                    <Column >
+                        <Text text="Product"></Text>
+                    </Column>
+                    <Column >
+                        <Text text="Per Unit"></Text>
+                    </Column>
+                    <Column >
+                        <Text text="In Stock"></Text>
+                    </Column>
+                </columns>
+            </Table>
+        </content>
+    </Page>
+</mvc:View>
