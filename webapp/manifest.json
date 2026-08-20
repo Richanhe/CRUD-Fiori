@@ -14,6 +14,15 @@
       "id": "@sap/generator-fiori:basic",
       "version": "1.30.0",
       "toolsId": "994380c9-705e-42c9-95ec-19c7397ced17"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/sap/opu/odata4/sap/zui_usuario_o4/srvd/sap/zui_usuario/0001/",
+        "type": "OData",
+        "settings": {
+            "odataVersion": "4.0"
+        }
+      }
     }
   },
   "sap.ui": {
@@ -50,6 +59,15 @@
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
           "bundleName": "project1.i18n.i18n"
+        }
+      },
+      "": {
+        "type": "sap.ui.model.odata.v4.ODataModel",
+        "dataSource": "mainService",
+        "settings": {
+          "synchronizationMode": "None",
+          "operationMode": "Server",
+          "autoExpandSelect": true
         }
       }
     },
@@ -121,6 +139,13 @@
           "target": [
             "TargetParameters"
           ]
+        },
+        {
+          "name": "RouteODataCRUD",
+          "pattern": "odatacrud",
+          "target": [
+            "TargetODataCRUD"
+          ]
         }
       ],
       "targets": {
@@ -151,6 +176,10 @@
         "TargetParameters": {
           "id": "Parameters",
           "name": "Parameters"
+        },
+        "TargetODataCRUD": {
+          "id": "ODataCRUD",
+          "name": "ODataCRUD"
         }
       }
     },

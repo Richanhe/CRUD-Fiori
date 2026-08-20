@@ -46,7 +46,9 @@ sap.ui.define([
             this.byId("CRUDFirstNameInput").setValue("")
             this.byId("CRUDLastNameInput").setValue("")
             this.byId("ageInput").setValue("")
-            const hobbies = this.byId("hobbiesInput").setValue("")
+
+            const hobbies = this.byId("hobbiesInput")
+            hobbies.setValue("")
             hobbies.removeAllTokens()
         },
 

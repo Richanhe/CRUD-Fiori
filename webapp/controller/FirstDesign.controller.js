@@ -32,6 +32,9 @@ sap.ui.define([
         onPressGoToCRUD() {
             this.oRouter.navTo("RouteCRUD")
         },
+        onPressGoToODataCRUD() {
+            this.oRouter.navTo("RouteODataCRUD")
+        },
         onPressGoToParameters() {
             this.oRouter.navTo("RouteParameters", {
                 id: 123

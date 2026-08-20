@@ -51,6 +51,11 @@
                         press=".onPressGoToCRUD"
                     />
                     <Button 
+                        text="{i18n>goToODataCRUDButtonText}"
+                        type="Default"
+                        press=".onPressGoToODataCRUD"
+                    />
+                    <Button 
                         text="{i18n>goToParametersButtonText}"
                         type="Default"
                         press=".onPressGoToParameters"

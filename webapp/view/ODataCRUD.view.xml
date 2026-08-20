@@ -1,0 +1,71 @@
+<mvc:View controllerName="project1.controller.ODataCRUD"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Page title="{i18n>oDataCRUDPageName}">
+        <content>
+            <HBox class="sapUiMediumMargin" gap="0.5rem">
+                <VBox >
+                    <Label text="Primeiro nome"></Label>
+                    <Input type="Text" id="oDataCRUDFirstNameInput"></Input>
+                </VBox>
+                <VBox >
+                    <Label text="Último nome"></Label>
+                    <Input type="Text" id="oDataCRUDLastNameInput"></Input>
+                </VBox>
+                <VBox >
+                    <Label text="Idade"></Label>
+                    <Input type="Number" id="oDataCRUDAgeInput"></Input>
+                </VBox>
+                <VBox >
+                    <Label text="Hobbies"></Label>
+                    <MultiInput 
+                        id="oDataCRUDHobbiesInput"
+                        submit=".onSubmitHobby"
+                    ></MultiInput>
+                </VBox>
+                <VBox >
+                    <Label ></Label>
+                    <Button id="oDataCRUDSaveButton" press=".onPressAddUser" text="Adicionar usuário"></Button>
+                </VBox>
+            </HBox>
+
+            <Title class="sapUiMediumMargin" text="Usuários"></Title>
+            <Table id="usersTable" items="{/Users}">
+                <columns>
+                    <Column>
+                        <Text text="Nome"></Text>
+                    </Column>
+                    <Column>
+                        <Text text="Idade"></Text>
+                    </Column>
+                    <!-- <Column >
+                        <Text text="Hobbies"></Text>
+                    </Column> -->
+                    <Column >
+                        <Text text="Ações"></Text>
+                    </Column>
+                </columns>
+                <ColumnListItem>
+                    <cells>
+                        <ObjectIdentifier title="{firstname} {lastname}" text="{user_id}"></ObjectIdentifier>
+                        <Text text="{age}"></Text>
+                        <!-- <List items="{path: 'Hobbies', templateShareable: false}">
+                            <StandardListItem title="{name}"></StandardListItem>
+                        </List> -->
+                        <HBox gap="0.5rem">
+                            <Button 
+                                text="Editar"
+                                press=".onPressEditUser"
+                            ></Button>
+                            <Button 
+                                text="Excluir"
+                                type="Reject"
+                                press=".onPressDeleteUser"
+                            ></Button>
+                        </HBox>
+                    </cells>
+                </ColumnListItem>
+            </Table>
+        </content>
+    </Page>
+</mvc:View>
