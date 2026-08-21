@@ -92,8 +92,6 @@ sap.ui.define([
 
             const user = oContext.getObject();
 
-            console.log(user)
-
             this.byId("oDataCRUDFirstNameInput").setValue(user.firstname);
 
             this.byId("oDataCRUDLastNameInput").setValue(user.lastname);
@@ -118,5 +116,29 @@ sap.ui.define([
                 console.error(error)
             }
         },
+
+        onPressShowDeletedUsers(oEvent) {
+            const button = oEvent.getSource()
+            const oTable = this.byId("usersTable")
+
+            if (button.getText() == "Usuários") {
+                oTable.unbindItems();
+                oTable.bindItems({
+                    path: "/Users",
+                    template: this.byId("userItemTemplate")
+                });
+
+                button.setText("Usuários deletados")
+                return
+            }
+
+            oTable.unbindItems();
+            oTable.bindItems({
+                path: "/DeletedUsers",
+                template: this.byId("userItemTemplate")
+            });
+
+            button.setText("Usuários")
+        }
     });
 });

@@ -28,8 +28,10 @@
                     <Button id="oDataCRUDSaveButton" press=".onPressAddUser" text="Adicionar usuário"></Button>
                 </VBox>
             </HBox>
-
-            <Title class="sapUiMediumMargin" text="Usuários"></Title>
+            <HBox gap='0.5rem'>
+                <Title text="Usuários"></Title>
+                <Button text="Usuários deletados" press=".onPressShowDeletedUsers"></Button>
+            </HBox>
             <Table id="usersTable" items="{/Users}">
                 <columns>
                     <Column>
@@ -45,7 +47,7 @@
                         <Text text="Ações"></Text>
                     </Column>
                 </columns>
-                <ColumnListItem>
+                <ColumnListItem id="userItemTemplate">
                     <cells>
                         <ObjectIdentifier title="{firstname} {lastname}" text="{user_id}"></ObjectIdentifier>
                         <Text text="{age}"></Text>
