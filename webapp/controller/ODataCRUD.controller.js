@@ -107,9 +107,13 @@ sap.ui.define([
 
         async onPressDeleteUser(oEvent) {
             const oContext = oEvent.getSource().getBindingContext()
+            const oModel = oContext.getModel()
 
             try {
-                await oContext.delete("$direct")
+                await oModel.bindContext(
+                    `${oContext.getPath()}/com.sap.gateway.srvd.zui_usuario.v0001.softDelete(...)`
+                ).execute();
+                await oModel.refresh();
             } catch(error) {
                 console.error(error)
             }
