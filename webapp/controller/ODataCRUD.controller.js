@@ -8,9 +8,13 @@ sap.ui.define([
     return Controller.extend("project1.controller.ODataCRUD", {
         oModel: null,
         editingContext: null,
+        i18n: null,
 
         onInit() {
             this.oModel = this.getView().getModel()
+            this.i18n = this.getOwnerComponent()
+                .getModel("i18n")
+                .getResourceBundle();
         },
 
         clearInputs() {
@@ -62,7 +66,7 @@ sap.ui.define([
 
                     this.editingContext = null;
 
-                    this.byId("oDataCRUDSaveButton").setText("Adicionar usuário");
+                    this.byId("oDataCRUDSaveButton").setText(this.i18n.getText("addUser"));
 
                     this.clearInputs();
 
@@ -100,7 +104,7 @@ sap.ui.define([
 
             this.editingContext = oContext;
 
-            this.byId("oDataCRUDSaveButton").setText("Salvar mudanças");
+            this.byId("oDataCRUDSaveButton").setText(this.i18n.getText("saveChanges"));
         },
 
         async onPressDeleteUser(oEvent) {
@@ -110,6 +114,20 @@ sap.ui.define([
             try {
                 await oModel.bindContext(
                     `${oContext.getPath()}/com.sap.gateway.srvd.zui_usuario.v0001.softDelete(...)`
+                ).execute();
+                await oModel.refresh();
+            } catch(error) {
+                console.error(error)
+            }
+        },
+
+        async onPressRestoreUser(oEvent) {
+            const oContext = oEvent.getSource().getBindingContext()
+            const oModel = oContext.getModel()
+
+            try {
+                await oModel.bindContext(
+                    `${oContext.getPath()}/com.sap.gateway.srvd.zui_usuario.v0001.restore(...)`
                 ).execute();
                 await oModel.refresh();
             } catch(error) {
@@ -128,7 +146,7 @@ sap.ui.define([
                     template: this.byId("userItemTemplate")
                 });
 
-                button.setText("Usuários deletados")
+                button.setText(this.i18n.getText("deletedUsers"))
                 return
             }
 
@@ -138,7 +156,7 @@ sap.ui.define([
                 template: this.byId("userItemTemplate")
             });
 
-            button.setText("Usuários")
+            button.setText(this.i18n.getText("users"))
         }
     });
 });

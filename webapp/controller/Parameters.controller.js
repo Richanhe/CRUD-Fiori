@@ -10,8 +10,13 @@ sap.ui.define([
             oRouter.getRoute("RouteParameters").attachPatternMatched((oEvent) => {
                 const id = oEvent.getParameter("arguments").id
 
+                const oResourceBundle = this.getOwnerComponent()
+                    .getModel("i18n")
+                    .getResourceBundle();
+
                 const idText = this.byId('idText')
-                idText.setText('O id é: ' + id)
+
+                idText.setText(oResourceBundle.getText("idText", [id]));
             })
         },
     });

@@ -1,7 +1,7 @@
 <mvc:View controllerName="project1.controller.Parameters"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m">
-    <Page title="{i18n>parametersPageName}">
+    <Page title="{i18n>parameters}">
         <content>
             <VBox class="sapUiMediumMargin">
                 <Text id="idText"></Text>

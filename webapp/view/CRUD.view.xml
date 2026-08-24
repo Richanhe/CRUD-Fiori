@@ -1,23 +1,23 @@
 <mvc:View controllerName="project1.controller.CRUD"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m">
-    <Page title="{i18n>CRUDPageName}">
+    <Page title="{i18n>CRUD}">
         <content>
             <HBox class="sapUiMediumMargin" gap="0.5rem">
                 <VBox >
-                    <Label text="Primeiro nome"></Label>
+                    <Label text="{i18n>firstName}"></Label>
                     <Input type="Text" id="CRUDFirstNameInput"></Input>
                 </VBox>
                 <VBox >
-                    <Label text="Último nome"></Label>
+                    <Label text="{i18n>lastName}"></Label>
                     <Input type="Text" id="CRUDLastNameInput"></Input>
                 </VBox>
                 <VBox >
-                    <Label text="Idade"></Label>
+                    <Label text="{i18n>age}"></Label>
                     <Input type="Number" id="ageInput"></Input>
                 </VBox>
                 <VBox >
-                    <Label text="Hobbies"></Label>
+                    <Label text="{i18n>hobbies}"></Label>
                     <MultiInput 
                         id="hobbiesInput"
                         submit=".onSubmitHobby"
@@ -25,24 +25,24 @@
                 </VBox>
                 <VBox >
                     <Label ></Label>
-                    <Button id="saveButton" press=".onPressAddUser" text="Adicionar usuário"></Button>
+                    <Button id="saveButton" press=".onPressAddUser" text="{i18n>addUser}"></Button>
                 </VBox>
             </HBox>
 
-            <Title class="sapUiMediumMargin" text="Usuários"></Title>
+            <Title class="sapUiMediumMargin" text="{i18n>users}"></Title>
             <Table items="{/Users}">
                 <columns>
                     <Column>
-                        <Text text="Nome"></Text>
+                        <Text text="{i18n>name}"></Text>
                     </Column>
                     <Column>
-                        <Text text="Idade"></Text>
+                        <Text text="{i18n>age}"></Text>
                     </Column>
                     <Column >
-                        <Text text="Hobbies"></Text>
+                        <Text text="{i18n>hobbies}"></Text>
                     </Column>
                     <Column >
-                        <Text text="Ações"></Text>
+                        <Text text="{i18n>actions}"></Text>
                     </Column>
                 </columns>
                 <ColumnListItem>
@@ -54,11 +54,11 @@
                         </List>
                         <HBox gap="0.5rem">
                             <Button 
-                                text="Editar"
+                                text="{i18n>update}"
                                 press=".onPressEditUser"
                             ></Button>
                             <Button 
-                                text="Excluir"
+                                text="{i18n>delete}"
                                 type="Reject"
                                 press=".onPressDeleteUser"
                             ></Button>

@@ -1,18 +1,18 @@
 <mvc:View controllerName="project1.controller.AggregationBinding"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m">
-    <Page title="{i18n>aggregationBindingPageName}">
+    <Page title="{i18n>aggregationBinding}">
         <content>
             <Table items="{/Products}">
                 <columns>
                     <Column >
-                        <Text text="Product"></Text>
+                        <Text text="{i18n>product}"></Text>
                     </Column>
                     <Column >
-                        <Text text="Per Unit"></Text>
+                        <Text text="{i18n>perUnit}"></Text>
                     </Column>
                     <Column >
-                        <Text text="In Stock"></Text>
+                        <Text text="{i18n>inStock}"></Text>
                     </Column>
                 </columns>
                 <ColumnListItem >

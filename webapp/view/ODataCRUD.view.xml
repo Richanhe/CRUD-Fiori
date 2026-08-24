@@ -1,23 +1,23 @@
 <mvc:View controllerName="project1.controller.ODataCRUD"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m">
-    <Page title="{i18n>oDataCRUDPageName}">
+    <Page title="{i18n>oDataCRUD}">
         <content>
             <HBox class="sapUiMediumMargin" gap="0.5rem">
                 <VBox >
-                    <Label text="Primeiro nome"></Label>
+                    <Label text="{i18n>firstName}"></Label>
                     <Input type="Text" id="oDataCRUDFirstNameInput"></Input>
                 </VBox>
                 <VBox >
-                    <Label text="Último nome"></Label>
+                    <Label text="{i18n>lastName}"></Label>
                     <Input type="Text" id="oDataCRUDLastNameInput"></Input>
                 </VBox>
                 <VBox >
-                    <Label text="Idade"></Label>
+                    <Label text="{i18n>age}"></Label>
                     <Input type="Number" id="oDataCRUDAgeInput"></Input>
                 </VBox>
                 <VBox >
-                    <Label text="Hobbies"></Label>
+                    <Label text="{i18n>hobbies}"></Label>
                     <MultiInput 
                         id="oDataCRUDHobbiesInput"
                         submit=".onSubmitHobby"
@@ -25,26 +25,26 @@
                 </VBox>
                 <VBox >
                     <Label ></Label>
-                    <Button id="oDataCRUDSaveButton" press=".onPressAddUser" text="Adicionar usuário"></Button>
+                    <Button id="oDataCRUDSaveButton" press=".onPressAddUser" text="{i18n>addUser}"></Button>
                 </VBox>
             </HBox>
-            <HBox gap='0.5rem'>
-                <Title text="Usuários"></Title>
-                <Button text="Usuários deletados" press=".onPressShowDeletedUsers"></Button>
+            <HBox gap='0.5rem' alignItems="Center">
+                <Title text="{i18n>users}"></Title>
+                <Button text="{i18n>deletedUsers}" press=".onPressShowDeletedUsers"></Button>
             </HBox>
             <Table id="usersTable" items="{/Users}">
                 <columns>
                     <Column>
-                        <Text text="Nome"></Text>
+                        <Text text="{i18n>name}"></Text>
                     </Column>
                     <Column>
-                        <Text text="Idade"></Text>
+                        <Text text="{i18n>age}"></Text>
                     </Column>
                     <!-- <Column >
-                        <Text text="Hobbies"></Text>
+                        <Text text="{i18n>hobbies}"></Text>
                     </Column> -->
                     <Column >
-                        <Text text="Ações"></Text>
+                        <Text text="{i18n>actions}"></Text>
                     </Column>
                 </columns>
                 <ColumnListItem id="userItemTemplate">
@@ -56,13 +56,17 @@
                         </List> -->
                         <HBox gap="0.5rem">
                             <Button 
-                                text="Editar"
+                                text="{i18n>update}"
                                 press=".onPressEditUser"
                             ></Button>
                             <Button 
-                                text="Excluir"
+                                text="{i18n>delete}"
                                 type="Reject"
                                 press=".onPressDeleteUser"
+                            ></Button>
+                            <Button 
+                                text="{i18n>restore}"
+                                press=".onPressRestoreUser"
                             ></Button>
                         </HBox>
                     </cells>

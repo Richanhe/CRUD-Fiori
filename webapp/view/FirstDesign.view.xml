@@ -1,62 +1,62 @@
 <mvc:View controllerName="project1.controller.FirstDesign"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m">
-    <Page title="{i18n>firstDesignPageName}">
+    <Page title="{i18n>home}">
         <content>
             <VBox 
                 class="sapUiMediumMargin"
                 gap="0.5rem"
             >
                 <Title 
-                    text="{i18n>nameInputTitle}"
+                    text="{i18n>whatYourName}"
                     level="H1"
                 />
 
                  <Input
                     id="input"
-                    placeholder="{i18n>nameInputPlaceholder}" 
+                    placeholder="{i18n>writeYourName}" 
                 />
 
                 <Button
                     id="button"
-                    text="{i18n>sendButtonText}"
+                    text="{i18n>send}"
                     type="Emphasized"
                     press=".onPress" 
                 />
 
                 <HBox gap="0.5rem">
                     <Button 
-                        text="{i18n>goToFullNameButtonText}"
+                        text="{i18n>noDataBinding}"
                         type="Default"
                         press=".onPressGoToFullName"
                     />
                     <Button 
-                        text="{i18n>goToPropertyBindingButtonText}"
+                        text="{i18n>propertyBinding}"
                         type="Default"
                         press=".onPressGoToPropertyBinding"
                     />
                     <Button 
-                        text="{i18n>goToAggregationBindingButtonText}"
+                        text="{i18n>aggregationBinding}"
                         type="Default"
                         press=".onPressGoToAggregationBinding"
                     />
                     <Button 
-                        text="{i18n>goToFactoryFunctionsButtonText}"
+                        text="{i18n>factoryFunctions}"
                         type="Default"
                         press=".onPressGoToFactoryFunctions"
                     />
                     <Button 
-                        text="{i18n>goToCRUDButtonText}"
+                        text="{i18n>CRUD}"
                         type="Default"
                         press=".onPressGoToCRUD"
                     />
                     <Button 
-                        text="{i18n>goToODataCRUDButtonText}"
+                        text="{i18n>oDataCRUD}"
                         type="Default"
                         press=".onPressGoToODataCRUD"
                     />
                     <Button 
-                        text="{i18n>goToParametersButtonText}"
+                        text="{i18n>parameters}"
                         type="Default"
                         press=".onPressGoToParameters"
                     />

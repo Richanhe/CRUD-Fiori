@@ -9,6 +9,7 @@ sap.ui.define([
     return Controller.extend("project1.controller.CRUD", {
         oModel: null,
         editingPath: null,
+        i18n: null,
 
         onInit() {
             this.oModel = new JSONModel({
@@ -40,6 +41,10 @@ sap.ui.define([
                 ]
             })
             this.getView().setModel(this.oModel)
+
+            this.i18n = this.getOwnerComponent()
+                .getModel("i18n")
+                .getResourceBundle();
         },
 
         clearInputs() {
@@ -96,7 +101,7 @@ sap.ui.define([
 
                 this.editingPath = null
 
-                this.byId("saveButton").setText("Adicionar usuário");
+                this.byId("saveButton").setText(this.i18n.getText("addUser"));
             } else {
                 user.UserID = users.length
 
@@ -144,7 +149,7 @@ sap.ui.define([
 
             this.editingPath = context.getPath()
 
-            this.byId("saveButton").setText("Salvar mudanças");
+            this.byId("saveButton").setText(this.i18n.getText("saveChanges"));
         }
     });
 });
