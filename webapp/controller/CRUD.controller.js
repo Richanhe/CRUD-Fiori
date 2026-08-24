@@ -101,7 +101,7 @@ sap.ui.define([
 
                 this.editingPath = null
 
-                this.byId("saveButton").setText(this.i18n.getText("addUser"));
+                this.byId("saveButton").setText(this.i18n.getText("add"));
             } else {
                 user.UserID = users.length
 
@@ -149,7 +149,7 @@ sap.ui.define([
 
             this.editingPath = context.getPath()
 
-            this.byId("saveButton").setText(this.i18n.getText("saveChanges"));
+            this.byId("saveButton").setText(this.i18n.getText("save"));
         }
     });
 });

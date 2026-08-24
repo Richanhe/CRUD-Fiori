@@ -29,7 +29,6 @@ sap.ui.define([
 
         onSubmitHobby(oEvent) {
             const input = oEvent.getSource()
-
             const value = input.getValue().trim()
 
             if (!value) {
@@ -50,33 +49,30 @@ sap.ui.define([
             const lastName = this.byId("oDataCRUDLastNameInput").getValue()
             const age = this.byId("oDataCRUDAgeInput").getValue()
             // const hobbies = this.byId("hobbiesInput").getTokens()
-
+            
             if (!firstName || !lastName || !age) {
                 MessageBox.warning("Preencha todos os campos.")
                 return;
             }
-
+            
             try {
                 if (this.editingContext) {
+                    const button = this.byId('cancelUpdateButton')
+                    button.setVisible(false)
+
                     this.editingContext.setProperty("firstname", firstName);
-
                     this.editingContext.setProperty("lastname", lastName);
-
                     this.editingContext.setProperty("age", Number(age));
-
                     this.editingContext = null;
 
-                    this.byId("oDataCRUDSaveButton").setText(this.i18n.getText("addUser"));
-
+                    this.byId("oDataCRUDSaveButton").setText(this.i18n.getText("add"));
                     this.clearInputs();
 
                     return;
                 }
 
                 const oTable = this.byId("usersTable")
-
                 const oListBinding = oTable.getBinding("items")
-
                 const oContext = oListBinding.create({
                     firstname: firstName,
                     lastname: lastName,
@@ -93,8 +89,10 @@ sap.ui.define([
 
         onPressEditUser(oEvent) {
             const oContext = oEvent.getSource().getBindingContext()
-
             const user = oContext.getObject();
+            
+            const button = this.byId('cancelUpdateButton')
+            button.setVisible(true)
 
             this.byId("oDataCRUDFirstNameInput").setValue(user.firstname);
 
@@ -104,7 +102,8 @@ sap.ui.define([
 
             this.editingContext = oContext;
 
-            this.byId("oDataCRUDSaveButton").setText(this.i18n.getText("saveChanges"));
+            this.byId("oDataCRUDSaveButton").setText(this.i18n.getText("save"));
+
         },
 
         async onPressDeleteUser(oEvent) {
@@ -138,8 +137,15 @@ sap.ui.define([
         onPressShowDeletedUsers(oEvent) {
             const button = oEvent.getSource()
             const oTable = this.byId("usersTable")
+            const deleteButton = this.byId("deleteButton")
+            const editButton = this.byId("editButton")
+            const restoreButton = this.byId("restoreButton")
 
             if (button.getText() == "Usuários") {
+                restoreButton.setVisible(false)
+                deleteButton.setVisible(true)
+                editButton.setVisible(true)
+                
                 oTable.unbindItems();
                 oTable.bindItems({
                     path: "/Users",
@@ -149,6 +155,9 @@ sap.ui.define([
                 button.setText(this.i18n.getText("deletedUsers"))
                 return
             }
+            restoreButton.setVisible(true)
+            deleteButton.setVisible(false)
+            editButton.setVisible(false)
 
             oTable.unbindItems();
             oTable.bindItems({
@@ -157,6 +166,15 @@ sap.ui.define([
             });
 
             button.setText(this.i18n.getText("users"))
+        },
+
+        onPressCancelUpdate(oEvent) {
+            const button = oEvent.getSource()
+            button.setVisible(false)
+
+            this.editingContext = null;
+            this.clearInputs();
+            this.byId("oDataCRUDSaveButton").setText(this.i18n.getText("add"));
         }
     });
 });

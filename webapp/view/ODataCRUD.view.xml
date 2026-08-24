@@ -1,9 +1,16 @@
 <mvc:View controllerName="project1.controller.ODataCRUD"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m">
-    <Page title="{i18n>oDataCRUD}">
+    <Page>
+        <customHeader>
+            <Bar>
+                <contentLeft>
+                    <Title text="{i18n>oDataCRUD}"/>
+                </contentLeft>
+            </Bar>
+        </customHeader>
         <content>
-            <HBox class="sapUiMediumMargin" gap="0.5rem">
+            <HBox class="sapUiSmallMargin" gap="0.5rem">
                 <VBox >
                     <Label text="{i18n>firstName}"></Label>
                     <Input type="Text" id="oDataCRUDFirstNameInput"></Input>
@@ -25,11 +32,15 @@
                 </VBox>
                 <VBox >
                     <Label ></Label>
-                    <Button id="oDataCRUDSaveButton" press=".onPressAddUser" text="{i18n>addUser}"></Button>
+                    <Button id="oDataCRUDSaveButton" press=".onPressAddUser" text="{i18n>add}"></Button>
+                </VBox>
+                <VBox >
+                    <Label ></Label>
+                    <Button visible='false' id="cancelUpdateButton" type="Reject" press=".onPressCancelUpdate" text="{i18n>cancel}"></Button>
                 </VBox>
             </HBox>
             <HBox gap='0.5rem' alignItems="Center">
-                <Title text="{i18n>users}"></Title>
+                <Title text="{i18n>users}" class="sapUiSmallMarginBegin"></Title>
                 <Button text="{i18n>deletedUsers}" press=".onPressShowDeletedUsers"></Button>
             </HBox>
             <Table id="usersTable" items="{/Users}">
@@ -58,15 +69,19 @@
                             <Button 
                                 text="{i18n>update}"
                                 press=".onPressEditUser"
+                                id="editButton"
                             ></Button>
                             <Button 
                                 text="{i18n>delete}"
                                 type="Reject"
                                 press=".onPressDeleteUser"
+                                id="deleteButton"
                             ></Button>
                             <Button 
                                 text="{i18n>restore}"
                                 press=".onPressRestoreUser"
+                                visible='false'
+                                id="restoreButton"
                             ></Button>
                         </HBox>
                     </cells>
