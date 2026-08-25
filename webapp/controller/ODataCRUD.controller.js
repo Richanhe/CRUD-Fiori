@@ -11,7 +11,7 @@ sap.ui.define([
         i18n: null,
 
         onInit() {
-            this.oModel = this.getView().getModel()
+            this.oModel = this.getOwnerComponent().getModel();
             this.i18n = this.getOwnerComponent()
                 .getModel("i18n")
                 .getResourceBundle();
@@ -27,18 +27,40 @@ sap.ui.define([
             hobbies.removeAllTokens()
         },
 
-        onSubmitHobby(oEvent) {
+        async onSubmitHobby(oEvent) {
             const input = oEvent.getSource()
-            const value = input.getValue().trim()
+            const sHobby = input.getValue().trim()
+            var sHobbyId
 
-            if (!value) {
+            if (!sHobby) {
                 return
+            }
+
+            const oListBinding = this.oModel.bindList("/Hobbies", null, null, null, {
+                $filter: `name eq '${sHobby}'`
+            });
+
+            const aContexts = await oListBinding.requestContexts();
+
+            if (aContexts.length > 0) {
+                const oHobby = aContexts[0].getObject();
+                sHobbyId = oHobby.hobby_id;
+            } else {
+                const oHobbiesBinding = this.oModel.bindList("/Hobbies");
+
+                const oHobbyContext = oHobbiesBinding.create({
+                    name: sHobby
+                });
+
+                await oHobbyContext.created();
+
+                sHobbyId = oHobbyContext.getProperty("hobby_id");
             }
 
             input.addToken(
                 new Token({
-                    text: value
-                })
+                    text: sHobby
+                }).data("hobbyId", sHobbyId)
             )
 
             input.setValue("")
@@ -63,10 +85,36 @@ sap.ui.define([
                     this.editingContext.setProperty("firstname", firstName);
                     this.editingContext.setProperty("lastname", lastName);
                     this.editingContext.setProperty("age", Number(age));
+
+                    const oHobbiesBinding = this.oModel.bindList(
+                        `${this.editingContext.getPath()}/_Hobbies`
+                    )
+
+                    const aHobbyContexts = await oHobbiesBinding.requestContexts()
+
+                    for (const oHobbyContext of aHobbyContexts) {
+                        await oHobbyContext.delete()
+                    }
+
+                    const aTokens = this.byId("oDataCRUDHobbiesInput").getTokens()
+
+                    for (const oToken of aTokens) {
+
+                        const sHobbyId = oToken.data("hobbyId")
+
+                        const oNewHobbyContext = oHobbiesBinding.create({
+                            hobby_id: sHobbyId
+                        })
+
+                        await oNewHobbyContext.created()
+                    }
+
                     this.editingContext = null;
 
                     this.byId("oDataCRUDSaveButton").setText(this.i18n.getText("add"));
                     this.clearInputs();
+
+                    await this.oModel.refresh()
 
                     return;
                 }
@@ -81,13 +129,31 @@ sap.ui.define([
 
                 await oContext.created()
 
+                const aTokens = this.byId("oDataCRUDHobbiesInput").getTokens()
+
+                const oHobbiesBinding = this.oModel.bindList(
+                    `${oContext.getPath()}/_Hobbies`
+                )
+
+                for (const oToken of aTokens) {
+                    const sHobbyId = oToken.data("hobbyId")
+
+                    const oHobbyContext = oHobbiesBinding.create({
+                        hobby_id: sHobbyId
+                    })
+
+                    await oHobbyContext.created()
+                }
+
                 this.clearInputs();
+
+                await this.oModel.refresh();
             } catch(error) {
                 console.error(error)
             }
         },
 
-        onPressEditUser(oEvent) {
+        async onPressEditUser(oEvent) {
             const oContext = oEvent.getSource().getBindingContext()
             const user = oContext.getObject();
             
@@ -95,10 +161,33 @@ sap.ui.define([
             button.setVisible(true)
 
             this.byId("oDataCRUDFirstNameInput").setValue(user.firstname);
-
             this.byId("oDataCRUDLastNameInput").setValue(user.lastname);
-
             this.byId("oDataCRUDAgeInput").setValue(user.age);
+
+            const oHobbiesInput = this.byId("oDataCRUDHobbiesInput")
+            oHobbiesInput.removeAllTokens()
+
+            const oHobbiesBinding = this.oModel.bindList(
+                `${oContext.getPath()}/_Hobbies`
+            )
+
+            const aHobbyContexts = await oHobbiesBinding.requestContexts()
+
+            for (const oHobbyContext of aHobbyContexts) {
+                const oHobby = oHobbyContext.getObject()
+
+                const oHobbyBinding = this.oModel.bindContext(
+                    `/Hobbies(${oHobby.hobby_id})`
+                )
+
+                const oHobbyData = await oHobbyBinding.requestObject()
+
+                oHobbiesInput.addToken(
+                    new Token({
+                        text: oHobbyData.name
+                    }).data("hobbyId", oHobby.hobby_id)
+                )
+            }
 
             this.editingContext = oContext;
 
@@ -108,13 +197,12 @@ sap.ui.define([
 
         async onPressDeleteUser(oEvent) {
             const oContext = oEvent.getSource().getBindingContext()
-            const oModel = oContext.getModel()
 
             try {
-                await oModel.bindContext(
+                await this.oModel.bindContext(
                     `${oContext.getPath()}/com.sap.gateway.srvd.zui_usuario.v0001.softDelete(...)`
                 ).execute();
-                await oModel.refresh();
+                await this.oModel.refresh();
             } catch(error) {
                 console.error(error)
             }
@@ -122,13 +210,12 @@ sap.ui.define([
 
         async onPressRestoreUser(oEvent) {
             const oContext = oEvent.getSource().getBindingContext()
-            const oModel = oContext.getModel()
 
             try {
-                await oModel.bindContext(
+                await this.oModel.bindContext(
                     `${oContext.getPath()}/com.sap.gateway.srvd.zui_usuario.v0001.restore(...)`
                 ).execute();
-                await oModel.refresh();
+                await this.oModel.refresh();
             } catch(error) {
                 console.error(error)
             }

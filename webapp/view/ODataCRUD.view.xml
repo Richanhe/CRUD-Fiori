@@ -51,9 +51,9 @@
                     <Column>
                         <Text text="{i18n>age}"></Text>
                     </Column>
-                    <!-- <Column >
+                    <Column >
                         <Text text="{i18n>hobbies}"></Text>
-                    </Column> -->
+                    </Column>
                     <Column >
                         <Text text="{i18n>actions}"></Text>
                     </Column>
@@ -62,9 +62,9 @@
                     <cells>
                         <ObjectIdentifier title="{firstname} {lastname}" text="{user_id}"></ObjectIdentifier>
                         <Text text="{age}"></Text>
-                        <!-- <List items="{path: 'Hobbies', templateShareable: false}">
-                            <StandardListItem title="{name}"></StandardListItem>
-                        </List> -->
+                        <List items="{path: '_Hobbies', templateShareable: false}">
+                            <StandardListItem title="{_Hobby/name}"></StandardListItem>
+                        </List>
                         <HBox gap="0.5rem">
                             <Button 
                                 text="{i18n>update}"
