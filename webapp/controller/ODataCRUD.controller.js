@@ -167,26 +167,22 @@ sap.ui.define([
             const oHobbiesInput = this.byId("oDataCRUDHobbiesInput")
             oHobbiesInput.removeAllTokens()
 
-            const oHobbiesBinding = this.oModel.bindList(
-                `${oContext.getPath()}/_Hobbies`
-            )
+            const oRow = oEvent.getSource().getParent().getParent()
+            const oHobbiesList = oRow.getCells().find(oCell => oCell.isA("sap.m.List"))
+            const aItems = oHobbiesList ? oHobbiesList.getItems() : []
 
-            const aHobbyContexts = await oHobbiesBinding.requestContexts()
+            for (const oItem of aItems) {
+                const oHobbyContext = oItem.getBindingContext()
+                if (oHobbyContext) {
+                    const sHobbyId = oHobbyContext.getProperty("hobby_id")
+                    const sHobbyName = oHobbyContext.getProperty("_Hobby/name") || oItem.getTitle()
 
-            for (const oHobbyContext of aHobbyContexts) {
-                const oHobby = oHobbyContext.getObject()
-
-                const oHobbyBinding = this.oModel.bindContext(
-                    `/Hobbies(${oHobby.hobby_id})`
-                )
-
-                const oHobbyData = await oHobbyBinding.requestObject()
-
-                oHobbiesInput.addToken(
-                    new Token({
-                        text: oHobbyData.name
-                    }).data("hobbyId", oHobby.hobby_id)
-                )
+                    oHobbiesInput.addToken(
+                        new Token({
+                            text: sHobbyName
+                        }).data("hobbyId", sHobbyId)
+                    )
+                }
             }
 
             this.editingContext = oContext;
