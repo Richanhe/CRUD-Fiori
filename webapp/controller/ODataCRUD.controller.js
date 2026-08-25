@@ -1,8 +1,9 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/m/Token",
-    "sap/m/MessageBox"
-], (Controller, Token, MessageBox) => {
+    "sap/m/MessageBox",
+    "sap/m/MessageToast"
+], (Controller, Token, MessageBox, MessageToast) => {
     "use strict";
 
     return Controller.extend("project1.controller.ODataCRUD", {
@@ -36,46 +37,56 @@ sap.ui.define([
                 return
             }
 
-            const oListBinding = this.oModel.bindList("/Hobbies", null, null, null, {
-                $filter: `name eq '${sHobby}'`
-            });
-
-            const aContexts = await oListBinding.requestContexts();
-
-            if (aContexts.length > 0) {
-                const oHobby = aContexts[0].getObject();
-                sHobbyId = oHobby.hobby_id;
-            } else {
-                const oHobbiesBinding = this.oModel.bindList("/Hobbies");
-
-                const oHobbyContext = oHobbiesBinding.create({
-                    name: sHobby
+            try {
+                input.setBusy(true)
+                const sSanitizedHobby = sHobby.replace(/'/g, "''")
+                const oListBinding = this.oModel.bindList("/Hobbies", null, null, null, {
+                    $filter: `name eq '${sSanitizedHobby}'`
                 });
 
-                await oHobbyContext.created();
+                const aContexts = await oListBinding.requestContexts();
 
-                sHobbyId = oHobbyContext.getProperty("hobby_id");
+                if (aContexts.length > 0) {
+                    const oHobby = aContexts[0].getObject();
+                    sHobbyId = oHobby.hobby_id;
+                } else {
+                    const oHobbiesBinding = this.oModel.bindList("/Hobbies");
+
+                    const oHobbyContext = oHobbiesBinding.create({
+                        name: sHobby
+                    });
+
+                    await oHobbyContext.created();
+
+                    sHobbyId = oHobbyContext.getProperty("hobby_id");
+                }
+
+                input.addToken(
+                    new Token({
+                        text: sHobby
+                    }).data("hobbyId", sHobbyId)
+                )
+
+                input.setValue("")
+            } catch(error) {
+                MessageBox.error("Erro ao adicionar hobby: " + (error.message || error.toString()))
+            } finally {
+                input.setBusy(false)
             }
-
-            input.addToken(
-                new Token({
-                    text: sHobby
-                }).data("hobbyId", sHobbyId)
-            )
-
-            input.setValue("")
         },
 
         async onPressAddUser() {
             const firstName = this.byId("oDataCRUDFirstNameInput").getValue()
             const lastName = this.byId("oDataCRUDLastNameInput").getValue()
             const age = this.byId("oDataCRUDAgeInput").getValue()
-            // const hobbies = this.byId("hobbiesInput").getTokens()
             
             if (!firstName || !lastName || !age) {
                 MessageBox.warning("Preencha todos os campos.")
                 return;
             }
+
+            const oView = this.getView()
+            oView.setBusy(true)
             
             try {
                 if (this.editingContext) {
@@ -92,29 +103,26 @@ sap.ui.define([
 
                     const aHobbyContexts = await oHobbiesBinding.requestContexts()
 
-                    for (const oHobbyContext of aHobbyContexts) {
-                        await oHobbyContext.delete()
-                    }
+                    const aDeletePromises = aHobbyContexts.map(oHobbyContext => oHobbyContext.delete())
+                    await Promise.all(aDeletePromises)
 
                     const aTokens = this.byId("oDataCRUDHobbiesInput").getTokens()
-
-                    for (const oToken of aTokens) {
-
+                    const aCreatePromises = aTokens.map(oToken => {
                         const sHobbyId = oToken.data("hobbyId")
-
                         const oNewHobbyContext = oHobbiesBinding.create({
                             hobby_id: sHobbyId
                         })
-
-                        await oNewHobbyContext.created()
-                    }
+                        return oNewHobbyContext.created()
+                    })
+                    await Promise.all(aCreatePromises)
 
                     this.editingContext = null;
 
                     this.byId("oDataCRUDSaveButton").setText(this.i18n.getText("add"));
                     this.clearInputs();
 
-                    await this.oModel.refresh()
+                    this.byId("usersTable").getBinding("items").refresh()
+                    MessageToast.show("Usuário atualizado com sucesso.")
 
                     return;
                 }
@@ -135,21 +143,23 @@ sap.ui.define([
                     `${oContext.getPath()}/_Hobbies`
                 )
 
-                for (const oToken of aTokens) {
+                const aCreatePromises = aTokens.map(oToken => {
                     const sHobbyId = oToken.data("hobbyId")
-
                     const oHobbyContext = oHobbiesBinding.create({
                         hobby_id: sHobbyId
                     })
-
-                    await oHobbyContext.created()
-                }
+                    return oHobbyContext.created()
+                })
+                await Promise.all(aCreatePromises)
 
                 this.clearInputs();
 
-                await this.oModel.refresh();
+                this.byId("usersTable").getBinding("items").refresh()
+                MessageToast.show("Usuário adicionado com sucesso.")
             } catch(error) {
-                console.error(error)
+                MessageBox.error("Erro ao salvar usuário: " + (error.message || error.toString()))
+            } finally {
+                oView.setBusy(false)
             }
         },
 
@@ -193,27 +203,37 @@ sap.ui.define([
 
         async onPressDeleteUser(oEvent) {
             const oContext = oEvent.getSource().getBindingContext()
+            const oView = this.getView()
 
             try {
+                oView.setBusy(true)
                 await this.oModel.bindContext(
                     `${oContext.getPath()}/com.sap.gateway.srvd.zui_usuario.v0001.softDelete(...)`
                 ).execute();
-                await this.oModel.refresh();
+                this.byId("usersTable").getBinding("items").refresh()
+                MessageToast.show("Usuário excluído com sucesso.")
             } catch(error) {
-                console.error(error)
+                MessageBox.error("Erro ao excluir usuário: " + (error.message || error.toString()))
+            } finally {
+                oView.setBusy(false)
             }
         },
 
         async onPressRestoreUser(oEvent) {
             const oContext = oEvent.getSource().getBindingContext()
+            const oView = this.getView()
 
             try {
+                oView.setBusy(true)
                 await this.oModel.bindContext(
                     `${oContext.getPath()}/com.sap.gateway.srvd.zui_usuario.v0001.restore(...)`
                 ).execute();
-                await this.oModel.refresh();
+                this.byId("usersTable").getBinding("items").refresh()
+                MessageToast.show("Usuário restaurado com sucesso.")
             } catch(error) {
-                console.error(error)
+                MessageBox.error("Erro ao restaurar usuário: " + (error.message || error.toString()))
+            } finally {
+                oView.setBusy(false)
             }
         },
 
