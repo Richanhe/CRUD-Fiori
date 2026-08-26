@@ -129,32 +129,23 @@ sap.ui.define([
 
                 const oTable = this.byId("usersTable")
                 const oListBinding = oTable.getBinding("items")
+                const aTokens = this.byId("oDataCRUDHobbiesInput").getTokens()
+
                 const oContext = oListBinding.create({
                     firstname: firstName,
                     lastname: lastName,
-                    age: Number(age)
+                    age: Number(age),
+
+                    _Hobbies: aTokens.map(oToken => ({
+                        hobby_id: oToken.data("hobbyId")
+                    }))
                 })
 
                 await oContext.created()
 
-                const aTokens = this.byId("oDataCRUDHobbiesInput").getTokens()
-
-                const oHobbiesBinding = this.oModel.bindList(
-                    `${oContext.getPath()}/_Hobbies`
-                )
-
-                const aCreatePromises = aTokens.map(oToken => {
-                    const sHobbyId = oToken.data("hobbyId")
-                    const oHobbyContext = oHobbiesBinding.create({
-                        hobby_id: sHobbyId
-                    })
-                    return oHobbyContext.created()
-                })
-                await Promise.all(aCreatePromises)
-
                 this.clearInputs();
-
                 this.byId("usersTable").getBinding("items").refresh()
+                
                 MessageToast.show("Usuário adicionado com sucesso.")
             } catch(error) {
                 MessageBox.error("Erro ao salvar usuário: " + (error.message || error.toString()))
