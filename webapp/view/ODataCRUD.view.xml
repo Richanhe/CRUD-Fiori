@@ -28,6 +28,9 @@
                     <MultiInput 
                         id="oDataCRUDHobbiesInput"
                         submit=".onSubmitHobby"
+                        showSuggestion="true"
+                        liveChange=".onHobbyLiveChange"
+                        tokenUpdate=".onTokenUpdate"
                     ></MultiInput>
                 </VBox>
                 <VBox >

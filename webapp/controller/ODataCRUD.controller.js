@@ -2,8 +2,9 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/m/Token",
     "sap/m/MessageBox",
-    "sap/m/MessageToast"
-], (Controller, Token, MessageBox, MessageToast) => {
+    "sap/m/MessageToast",
+    "sap/ui/core/Item"
+], (Controller, Token, MessageBox, MessageToast, Item) => {
     "use strict";
 
     return Controller.extend("project1.controller.ODataCRUD", {
@@ -259,6 +260,52 @@ sap.ui.define([
             });
 
             button.setText(this.i18n.getText("users"))
+        },
+
+        async onHobbyLiveChange(oEvent) {
+            const oInput = oEvent.getSource()
+            const sValue = oEvent.getParameter("value").trim()
+
+            oInput.destroySuggestionItems()
+
+            if (!sValue) {
+                return
+            }
+
+            try {
+                const sSanitized = sValue.replace(/'/g, "''")
+                const oListBinding = this.oModel.bindList("/Hobbies", null, null, null, {
+                    $filter: `contains(name, '${sSanitized}')`
+                })
+
+                const aContexts = await oListBinding.requestContexts()
+
+                aContexts.forEach(oCtx => {
+                    const oHobby = oCtx.getObject()
+                    oInput.addSuggestionItem(
+                        new Item({ key: oHobby.hobby_id, text: oHobby.name })
+                    )
+                })
+            } catch(error) {
+                console.error(error)
+            }
+        },
+
+        onTokenUpdate(oEvent) {
+            if (oEvent.getParameter("type") !== "added") return
+
+            const oInput = oEvent.getSource()
+            const aAddedTokens = oEvent.getParameter("addedTokens") || []
+            const aSuggestionItems = oInput.getSuggestionItems()
+
+            aAddedTokens.forEach(oToken => {
+                if (oToken.data("hobbyId")) return // já tem id (criado pelo onSubmitHobby)
+
+                const oMatch = aSuggestionItems.find(oItem => oItem.getText() === oToken.getText())
+                if (oMatch) {
+                    oToken.data("hobbyId", oMatch.getKey())
+                }
+            })
         },
 
         onPressCancelUpdate(oEvent) {
