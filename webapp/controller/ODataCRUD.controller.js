@@ -116,12 +116,12 @@ sap.ui.define([
                     })
                     await Promise.all(aCreatePromises)
 
+                    await this.editingContext.requestSideEffects(["_Hobbies"]);
                     this.editingContext = null;
 
                     this.byId("oDataCRUDSaveButton").setText(this.i18n.getText("add"));
                     this.clearInputs();
 
-                    this.byId("usersTable").getBinding("items").refresh()
                     MessageToast.show("Usuário atualizado com sucesso.")
 
                     return;
@@ -144,8 +144,7 @@ sap.ui.define([
                 await oContext.created()
 
                 this.clearInputs();
-                this.byId("usersTable").getBinding("items").refresh()
-                
+
                 MessageToast.show("Usuário adicionado com sucesso.")
             } catch(error) {
                 MessageBox.error("Erro ao salvar usuário: " + (error.message || error.toString()))
